@@ -49,9 +49,20 @@ class SMSNotifier:
         if 'price' in vehicle:
             message_parts.append(f"💰 {vehicle['price']}")
         
+        # Location/Dealership information
+        if 'dealership' in vehicle and 'location' in vehicle:
+            message_parts.append(f"🏢 {vehicle['dealership']} - {vehicle['location']}")
+        elif 'dealership' in vehicle:
+            message_parts.append(f"🏢 {vehicle['dealership']}")
+        
+        # Inventory type (new/used)
+        if 'inventory_type' in vehicle:
+            type_emoji = "✨" if vehicle['inventory_type'] == 'new' else "🔄"
+            message_parts.append(f"{type_emoji} {vehicle['inventory_type'].title()} Vehicle")
+        
         # VIN if available (helps identify specific vehicle)
         if 'vin' in vehicle:
-            message_parts.append(f"� VIN: {vehicle['vin']}")
+            message_parts.append(f"🆔 VIN: {vehicle['vin']}")
         
         # Direct link to view the vehicle
         if 'url' in vehicle:

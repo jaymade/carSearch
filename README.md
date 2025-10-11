@@ -4,7 +4,7 @@
 
 ## 📖 Overview
 
-This application automatically searches AutoPark Honda's inventory for Honda Civics (2015 and newer) and sends SMS notifications when matches are found. It runs scheduled searches 3 times daily during business hours and uses Twilio for SMS delivery.
+This application automatically searches Leith Honda locations (Raleigh, Aberdeen) plus AutoPark Honda (Cary) for Honda Civics (2015 and newer) and sends SMS notifications when matches are found. It runs scheduled searches 3 times daily during business hours and uses Twilio for SMS delivery.
 
 ## ✨ Features
 

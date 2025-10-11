@@ -14,12 +14,12 @@ python3 src/main.py --help         # Show all available options
 
 ---
 
-### `src/scraper.py` - **Website Scraper Engine**
-**Purpose:** Scrapes Honda dealership inventory for Civics (new & used, 2015+)
-- Searches both new and used inventory
-- Extracts vehicle details, pricing, links
+### `src/scraper.py` - **Multi-Location Scraper Engine**
+**Purpose:** Scrapes ALL Leith Honda locations + AutoPark Honda for Civics (new & used, 2015+)
+- Searches 5 dealership locations simultaneously
+- Extracts vehicle details, pricing, links with location info
 - Filters by year (2015 and newer)
-- Handles duplicate detection
+- Handles duplicate detection across all locations
 
 ---
 

@@ -4,7 +4,7 @@ import logging
 import re
 from urllib.parse import urljoin, urlencode
 from typing import List, Dict, Optional
-from config import SEARCH_URL_NEW, SEARCH_URL_USED, SEARCH_PARAMS, MIN_YEAR
+from config import SEARCH_URL_NEW, SEARCH_URL_USED, SEARCH_PARAMS, MIN_YEAR, LEITH_HONDA_LOCATIONS
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -182,18 +182,29 @@ class HondaScraper:
             return None
     
     def search_vehicles(self) -> List[Dict]:
-        """Search for vehicles and return list of matches from both new and used inventory"""
+        """Search for vehicles across all Leith Honda locations (new and used inventory)"""
         all_vehicles = []
         
-        # Search new inventory
-        logger.info("Searching new inventory...")
-        new_vehicles = self.search_inventory_type("new")
-        all_vehicles.extend(new_vehicles)
+        logger.info(f"🏢 Searching {len(LEITH_HONDA_LOCATIONS)} Leith Honda locations...")
         
-        # Search used inventory
-        logger.info("Searching used inventory...")
-        used_vehicles = self.search_inventory_type("used")
-        all_vehicles.extend(used_vehicles)
+        # Search each Leith Honda location
+        for location_key, location_info in LEITH_HONDA_LOCATIONS.items():
+            logger.info(f"🚗 Searching {location_info['name']} - {location_info['location']}")
+            
+            try:
+                # Search new inventory for this location
+                new_vehicles = self.search_location_inventory(location_info, "new")
+                all_vehicles.extend(new_vehicles)
+                
+                # Search used inventory for this location  
+                used_vehicles = self.search_location_inventory(location_info, "used")
+                all_vehicles.extend(used_vehicles)
+                
+                logger.info(f"✅ Found {len(new_vehicles)} new + {len(used_vehicles)} used vehicles at {location_info['name']}")
+                
+            except Exception as e:
+                logger.error(f"❌ Error searching {location_info['name']}: {e}")
+                continue
         
         # Filter by year (2015 and newer)
         filtered_vehicles = []
@@ -209,8 +220,53 @@ class HondaScraper:
                 logger.info(f"❓ Vehicle {vehicle.get('title')} (year unknown) - including anyway")
                 filtered_vehicles.append(vehicle)
         
-        logger.info(f"Found {len(filtered_vehicles)} vehicles matching criteria")
+        logger.info(f"Found {len(filtered_vehicles)} vehicles matching criteria across all locations")
         return filtered_vehicles
+    
+    def search_location_inventory(self, location_info: Dict, inventory_type: str) -> List[Dict]:
+        """Search specific location's inventory (new or used)"""
+        vehicles = []
+        
+        # Get the appropriate URL for this location and inventory type
+        url_key = 'new_url' if inventory_type == 'new' else 'used_url'
+        base_url = location_info.get(url_key)
+        
+        if not base_url:
+            logger.warning(f"No {inventory_type} URL found for {location_info['name']}")
+            return vehicles
+        
+        # Build search URLs for Honda Civic models
+        search_urls = [
+            f"{base_url}?make=Honda&model=Civic",
+            f"{base_url}?make=Honda&model=Civic%20Hybrid"
+        ]
+        
+        for search_url in search_urls:
+            logger.info(f"Fetching {inventory_type} inventory: {search_url}")
+            
+            try:
+                soup = self.get_page_content(search_url)
+                if not soup:
+                    logger.warning(f"Failed to get content from {search_url}")
+                    continue
+                
+                # Extract vehicles from this page
+                page_vehicles = self.extract_vehicles_from_page(soup, search_url)
+                
+                # Add location info to each vehicle
+                for vehicle in page_vehicles:
+                    vehicle['dealership'] = location_info['name']
+                    vehicle['location'] = location_info['location']
+                    vehicle['inventory_type'] = inventory_type
+                
+                vehicles.extend(page_vehicles)
+                logger.info(f"Found {len(page_vehicles)} vehicles on page")
+                
+            except Exception as e:
+                logger.error(f"Error processing {search_url}: {e}")
+                continue
+        
+        return vehicles
     
     def extract_year_from_vehicle(self, vehicle: Dict) -> int:
         """Extract year from vehicle data"""
