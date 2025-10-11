@@ -30,9 +30,11 @@
                     <div class="criteria-label">Inventory Type</div>
                     <div class="criteria-value">New & Used Vehicles</div>
                 </div>
-                <div class="criteria-item">
-                    <div class="criteria-label">Search Frequency</div>
-                    <div class="criteria-value">3x Daily (9AM, 1PM, 5PM)</div>
+                <div class="criteria-item search-now-container">
+                    <button id="search-now-btn" class="search-now-btn" onclick="runNewSearch()">
+                        <i class="fas fa-search"></i> Search Now
+                    </button>
+                    <div class="search-status" id="search-status"></div>
                 </div>
             </div>
         </section>

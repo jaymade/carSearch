@@ -283,11 +283,64 @@ function timeAgo(dateString) {
     }
 }
 
+async function runNewSearch() {
+    const searchBtn = document.getElementById('search-now-btn');
+    const statusDiv = document.getElementById('search-status');
+    const searchIcon = searchBtn.querySelector('i');
+    
+    // Update UI to show searching state
+    searchBtn.disabled = true;
+    searchIcon.className = 'fas fa-spinner fa-spin';
+    statusDiv.textContent = 'Running search...';
+    statusDiv.className = 'search-status searching';
+    
+    try {
+        // Note: Since this is a static site on GitHub Pages, we can't directly run the Python scraper
+        // This is a simulation of what would happen in a full-stack application
+        
+        // Simulate search delay
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        
+        // In a real implementation, this would:
+        // 1. Make an API call to trigger the scraper
+        // 2. Wait for the scraper to complete
+        // 3. Update the data files
+        // 4. Refresh the dashboard
+        
+        // For now, we'll just refresh the existing data
+        await loadSearchResults();
+        await loadStatistics();
+        
+        // Update UI to show success
+        statusDiv.textContent = 'Search completed! (Note: This is a demo - actual scraping requires server setup)';
+        statusDiv.className = 'search-status success';
+        
+        // Update the last updated time
+        updateLastUpdatedTime();
+        
+    } catch (error) {
+        console.error('Search error:', error);
+        statusDiv.textContent = 'Search failed. Please try again.';
+        statusDiv.className = 'search-status error';
+    } finally {
+        // Reset button state
+        searchBtn.disabled = false;
+        searchIcon.className = 'fas fa-search';
+        
+        // Clear status after 10 seconds
+        setTimeout(() => {
+            statusDiv.textContent = '';
+            statusDiv.className = 'search-status';
+        }, 10000);
+    }
+}
+
 // Export functions for testing
 window.dashboardFunctions = {
     refreshResults,
     loadSearchResults,
     updateLastUpdatedTime,
     formatPrice,
-    timeAgo
+    timeAgo,
+    runNewSearch
 };
