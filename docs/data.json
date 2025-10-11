@@ -1,9 +1,9 @@
 {
-  "last_updated": "2025-10-11T13:22:34.640718",
-  "last_search": "2025-10-11T12:26:16.163557",
-  "total_searches": 18,
-  "vehicles_tracked": 3,
-  "dealerships_count": 1,
+  "last_updated": "2025-10-11T13:29:08.214327",
+  "last_search": "2025-10-11T13:28:00.857456",
+  "total_searches": 1,
+  "vehicles_tracked": 6,
+  "dealerships_count": 3,
   "matches": [
     {
       "title": "2023 Honda Civic Hybrid",
@@ -13,7 +13,7 @@
       "trim": "Hybrid",
       "type": "used",
       "price": "Not available",
-      "found_date": "2025-10-09T19:03:12.600105",
+      "found_date": "2025-10-11T13:28:00.856623",
       "dealership": "AutoPark Honda",
       "link": "https://www.autoparkhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
       "dealer_link": "https://www.autoparkhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
@@ -26,10 +26,23 @@
       "trim": "Hybrid",
       "type": "new",
       "price": "Not available",
-      "found_date": "2025-10-09T19:03:12.600085",
+      "found_date": "2025-10-11T13:28:00.856618",
       "dealership": "AutoPark Honda",
       "link": "https://www.autoparkhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
       "dealer_link": "https://www.autoparkhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
+    },
+    {
+      "title": "2023 Honda Civic Hybrid",
+      "year": "2023",
+      "make": "Honda",
+      "model": "Civic",
+      "trim": "Hybrid",
+      "type": "used",
+      "price": "Not available",
+      "found_date": "2025-10-11T13:28:00.856613",
+      "dealership": "Leith Honda Aberdeen",
+      "link": "https://www.leithhondaaberdeen.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
+      "dealer_link": "https://www.leithhondaaberdeen.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
     },
     {
       "title": "2025 Honda Civic Hybrid",
@@ -39,10 +52,36 @@
       "trim": "Hybrid",
       "type": "new",
       "price": "Not available",
-      "found_date": "2025-10-09T18:33:08.951741",
-      "dealership": "AutoPark Honda",
-      "link": "https://www.autoparkhonda.com/new-inventory/index.htm?ddcref=fluency&gad_campaignid=22734733881&gad_source=1&gbraid=0AAAABAaG6mfQOpK2diCaBGeCTGc4LhqeO&gclid=Cj0KCQjw9JLHBhC-ARIsAK4PhcqCXY-gm7O5MRM9DBDgS9_R_h1Rl40-Wcmu9q8NUNFidCrtbx3Npa4aAuCmEALw_wcB&jdp_adid=%7Badid%7D&jdp_campaign=honda%20Garner%20local%20geo_multi_honda_multi_a&jdp_campaign_platform=google&jdp_channel=search&jdp_cid=22734733881&jdp_digadprov=dealerdotcom&make=Honda&tcdadid=761417592946&tcdcmpid=2877363&utm_source=google&model=Civic%20Hybrid&model=Civic&trim=Sport&trim=Sport%20Touring&normalExteriorColor=Black&normalBodyStyle=Sedan",
-      "dealer_link": "https://www.autoparkhonda.com/new-inventory/index.htm?ddcref=fluency&gad_campaignid=22734733881&gad_source=1&gbraid=0AAAABAaG6mfQOpK2diCaBGeCTGc4LhqeO&gclid=Cj0KCQjw9JLHBhC-ARIsAK4PhcqCXY-gm7O5MRM9DBDgS9_R_h1Rl40-Wcmu9q8NUNFidCrtbx3Npa4aAuCmEALw_wcB&jdp_adid=%7Badid%7D&jdp_campaign=honda%20Garner%20local%20geo_multi_honda_multi_a&jdp_campaign_platform=google&jdp_channel=search&jdp_cid=22734733881&jdp_digadprov=dealerdotcom&make=Honda&tcdadid=761417592946&tcdcmpid=2877363&utm_source=google&model=Civic%20Hybrid&model=Civic&trim=Sport&trim=Sport%20Touring&normalExteriorColor=Black&normalBodyStyle=Sedan"
+      "found_date": "2025-10-11T13:28:00.856607",
+      "dealership": "Leith Honda Aberdeen",
+      "link": "https://www.leithhondaaberdeen.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
+      "dealer_link": "https://www.leithhondaaberdeen.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
+    },
+    {
+      "title": "2023 Honda Civic Hybrid",
+      "year": "2023",
+      "make": "Honda",
+      "model": "Civic",
+      "trim": "Hybrid",
+      "type": "used",
+      "price": "Not available",
+      "found_date": "2025-10-11T13:28:00.856597",
+      "dealership": "Leith Honda Raleigh",
+      "link": "https://www.leithhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
+      "dealer_link": "https://www.leithhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
+    },
+    {
+      "title": "2025 Honda Civic Hybrid",
+      "year": "2025",
+      "make": "Honda",
+      "model": "Civic",
+      "trim": "Hybrid",
+      "type": "new",
+      "price": "Not available",
+      "found_date": "2025-10-11T13:28:00.856578",
+      "dealership": "Leith Honda Raleigh",
+      "link": "https://www.leithhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
+      "dealer_link": "https://www.leithhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
     }
   ]
 }
