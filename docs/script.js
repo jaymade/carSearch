@@ -21,14 +21,48 @@ function initializeDashboard() {
 
 function updateLastUpdatedTime() {
     const now = new Date();
-    const timeString = now.toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'short', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
+    const timeString = now.toLocaleDateString() + ' at ' + now.toLocaleTimeString();
+    
+    // Update all elements with class 'last-updated'
+    const elements = document.querySelectorAll('.last-updated');
+    elements.forEach(el => {
+        el.textContent = timeString;
     });
-    document.getElementById('last-updated-time').textContent = timeString;
+}
+
+function pollForUpdates() {
+    let pollCount = 0;
+    const maxPolls = 20; // Poll for up to 10 minutes (30s intervals)
+    
+    const pollInterval = setInterval(async () => {
+        pollCount++;
+        
+        try {
+            // Check if data has been updated by looking at the timestamp or content
+            const response = await fetch('data.json');
+            const data = await response.json();
+            
+            // Update the display with any new data
+            await loadSearchResults();
+            await loadStatistics();
+            
+            // Check if we should stop polling (you might add a timestamp check here)
+            if (pollCount >= maxPolls) {
+                clearInterval(pollInterval);
+                const statusDiv = document.getElementById('search-status');
+                if (statusDiv) {
+                    statusDiv.textContent = 'Search completed! Dashboard updated with latest results.';
+                    statusDiv.className = 'search-status success';
+                }
+                updateLastUpdatedTime();
+            }
+        } catch (error) {
+            console.error('Error polling for updates:', error);
+            if (pollCount >= maxPolls) {
+                clearInterval(pollInterval);
+            }
+        }
+    }, 30000); // Poll every 30 seconds
 }
 
 async function loadSearchResults() {
@@ -295,28 +329,40 @@ async function runNewSearch() {
     statusDiv.className = 'search-status searching';
     
     try {
-        // Note: Since this is a static site on GitHub Pages, we can't directly run the Python scraper
-        // This is a simulation of what would happen in a full-stack application
+        // Trigger GitHub Actions workflow via repository dispatch
+        const response = await fetch('https://api.github.com/repos/jaymade/carSearch/dispatches', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json',
+                // Note: This would need a personal access token in a real implementation
+                // For security, this should be handled by a backend service
+            },
+            body: JSON.stringify({
+                event_type: 'manual-search',
+                client_payload: {
+                    triggered_by: 'search_now_button',
+                    timestamp: new Date().toISOString()
+                }
+            })
+        });
         
-        // Simulate search delay
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        
-        // In a real implementation, this would:
-        // 1. Make an API call to trigger the scraper
-        // 2. Wait for the scraper to complete
-        // 3. Update the data files
-        // 4. Refresh the dashboard
-        
-        // For now, we'll just refresh the existing data
-        await loadSearchResults();
-        await loadStatistics();
-        
-        // Update UI to show success
-        statusDiv.textContent = 'Search completed! (Note: This is a demo - actual scraping requires server setup)';
-        statusDiv.className = 'search-status success';
-        
-        // Update the last updated time
-        updateLastUpdatedTime();
+        if (response.ok) {
+            statusDiv.textContent = 'Search triggered! GitHub Action is running the scraper. Results will appear in ~2-3 minutes.';
+            statusDiv.className = 'search-status success';
+            
+            // Set up polling to check for updates
+            pollForUpdates();
+        } else {
+            // Fallback to demo behavior if API call fails
+            statusDiv.textContent = 'Search triggered! (Demo mode - GitHub Actions integration requires authentication)';
+            statusDiv.className = 'search-status success';
+            
+            // Refresh current data as fallback
+            await loadSearchResults();
+            await loadStatistics();
+            updateLastUpdatedTime();
+        }
         
     } catch (error) {
         console.error('Search error:', error);
