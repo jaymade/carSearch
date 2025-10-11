@@ -86,15 +86,16 @@ def convert_data_for_web():
             if year != 'Unknown':
                 enhanced_title = f"{year} {enhanced_title}"
         
-        # Format found date
+        # Format found date to be JavaScript-friendly
         found_date = first_seen
         if found_date:
             try:
-                # Convert ISO datetime to readable format
+                # Keep the original ISO format for JavaScript Date parsing
                 dt = datetime.fromisoformat(found_date.replace('Z', '+00:00'))
-                found_date = dt.strftime('%Y-%m-%d %H:%M')
+                found_date = dt.isoformat()
             except:
-                pass
+                # If parsing fails, use current time
+                found_date = datetime.now().isoformat()
         
         # Create vehicle entry
         vehicle_entry = {
