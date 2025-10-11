@@ -98,26 +98,27 @@ section h2 i {
 .search-now-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
     gap: 0.5rem;
+    height: 100%;
 }
 
 .search-now-btn {
     background: linear-gradient(135deg, #27ae60, #2ecc71);
     color: white;
     border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 1.1rem;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    min-width: 140px;
     justify-content: center;
+    flex-grow: 1;
 }
 
 .search-now-btn:hover {
@@ -138,10 +139,11 @@ section h2 i {
 }
 
 .search-status {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #7f8c8d;
     text-align: center;
-    min-height: 1.2rem;
+    min-height: 1rem;
+    line-height: 1.2;
 }
 
 .search-status.searching {
