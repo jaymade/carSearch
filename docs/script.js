@@ -1,7 +1,7 @@
 // Honda Car Search Dashboard JavaScript
 
 // Configuration
-const API_BASE_URL = window.location.origin + window.location.pathname.replace('/index.html', '').replace(/\/$/, '');
+const API_BASE_URL = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '').replace(/\/$/, '');
 const REFRESH_INTERVAL = 300000; // 5 minutes
 
 // Global variables
@@ -39,7 +39,8 @@ function pollForUpdates() {
         
         try {
             // Check if data has been updated by looking at the timestamp or content
-            const response = await fetch('data.json');
+            const cacheBuster = new Date().getTime();
+            const response = await fetch(`data.json?v=${cacheBuster}`);
             const data = await response.json();
             
             // Update the display with any new data
@@ -133,8 +134,9 @@ async function loadSearchResults() {
     const container = document.getElementById('results-container');
     
     try {
-        // Try to load from GitHub raw content or local data
-        const response = await fetch('data.json');
+        // Add cache busting to ensure fresh data
+        const cacheBuster = new Date().getTime();
+        const response = await fetch(`data.json?v=${cacheBuster}`);
         
         if (!response.ok) {
             // Fallback to sample data if no real data available
@@ -288,7 +290,9 @@ function updateStatistics(data) {
 
 async function loadStatistics() {
     try {
-        const response = await fetch('data.json');
+        // Add cache busting to ensure fresh statistics
+        const cacheBuster = new Date().getTime();
+        const response = await fetch(`data.json?v=${cacheBuster}`);
         if (response.ok) {
             const data = await response.json();
             updateStatistics(data);
