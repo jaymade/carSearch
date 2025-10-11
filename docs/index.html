@@ -39,12 +39,6 @@
                     <div class="criteria-label">Inventory Type</div>
                     <div class="criteria-value">Used Vehicles Only</div>
                 </div>
-                <div class="criteria-item search-now-container">
-                    <button id="search-now-btn" class="search-now-btn" onclick="runNewSearch()">
-                        <i class="fas fa-search"></i> Search Now
-                    </button>
-                    <div class="search-status" id="search-status"></div>
-                </div>
             </div>
         </section>
 
@@ -107,10 +101,16 @@
             <h2><i class="fas fa-list"></i> Recent Vehicle Matches</h2>
             <div class="results-header">
                 <span class="last-updated">Last Updated: <span id="last-updated-time">Loading...</span></span>
-                <button class="refresh-btn" onclick="refreshResults()">
-                    <i class="fas fa-sync-alt"></i> Refresh
-                </button>
+                <div class="header-buttons">
+                    <button id="search-now-btn" class="search-now-btn" onclick="runNewSearch()">
+                        <i class="fas fa-search"></i> Search Now
+                    </button>
+                    <button class="refresh-btn" onclick="refreshResults()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
             </div>
+            <div class="search-status" id="search-status"></div>
             
             <div id="results-container">
                 <!-- Results will be loaded here -->

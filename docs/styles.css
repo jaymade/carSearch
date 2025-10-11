@@ -375,12 +375,45 @@ section h2 i {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 .last-updated {
     color: #7f8c8d;
     font-size: 0.9rem;
+}
+
+.search-status {
+    margin: 10px 0;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.search-status.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.search-status.info {
+    background: #e3f2fd;
+    color: #1565c0;
+    border: 1px solid #bbdefb;
+}
+
+.search-status.loading {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
 }
 
 .refresh-btn {
