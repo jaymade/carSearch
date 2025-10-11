@@ -39,6 +39,37 @@
             </div>
         </section>
 
+        <!-- GitHub Token Setup (Collapsible) -->
+        <section class="setup-section" id="setup-section">
+            <button class="setup-toggle" onclick="toggleSetup()">
+                <i class="fas fa-cog"></i> Setup GitHub Authentication (Optional)
+                <span id="setup-arrow" class="setup-arrow">▼</span>
+            </button>
+            <div class="setup-content" id="setup-content" style="display: none;">
+                <p class="setup-info">
+                    <strong>Enable Real-time Search:</strong> To use the "Search Now" button for live scraping, 
+                    enter a GitHub Personal Access Token with "Actions" and "Contents" permissions.
+                </p>
+                <div class="token-input-group">
+                    <input type="password" id="github-token" placeholder="GitHub Personal Access Token (optional)" 
+                           class="token-input">
+                    <button onclick="saveToken()" class="save-token-btn">Save</button>
+                    <button onclick="clearToken()" class="clear-token-btn">Clear</button>
+                </div>
+                <div class="setup-status" id="setup-status"></div>
+                <details class="setup-help">
+                    <summary>How to create a GitHub token</summary>
+                    <ol>
+                        <li>Go to GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)</li>
+                        <li>Click "Generate new token (classic)"</li>
+                        <li>Select scopes: <code>repo</code> and <code>workflow</code></li>
+                        <li>Copy the token and paste it above</li>
+                    </ol>
+                    <p><strong>Note:</strong> The token is stored locally in your browser and never shared.</p>
+                </details>
+            </div>
+        </section>
+
         <!-- Search Statistics -->
         <section class="search-stats">
             <h2><i class="fas fa-chart-bar"></i> Search Statistics</h2>

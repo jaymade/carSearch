@@ -9,7 +9,12 @@ on:
     types: [manual-search]
     
   workflow_dispatch:
-    # Allow manual trigger from GitHub Actions tab
+    # Allow manual trigger from GitHub Actions tab and API calls
+    inputs:
+      triggered_by:
+        description: 'Source of the manual trigger'
+        required: false
+        default: 'github_actions_tab'
 
 jobs:
   search-vehicles:
@@ -65,7 +70,8 @@ jobs:
           echo "No changes detected, skipping commit"
         else
           TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S EST')
-          git commit -m "🚗 Automated search results - ${TIMESTAMP} - Found ${{ steps.count.outputs.count }} vehicles"
+          TRIGGER_SOURCE="${{ github.event.inputs.triggered_by || github.event.client_payload.triggered_by || 'scheduled' }}"
+          git commit -m "🚗 Automated search results - ${TIMESTAMP} - Found ${{ steps.count.outputs.count }} vehicles - Triggered by: ${TRIGGER_SOURCE}"
           git push
         fi
     

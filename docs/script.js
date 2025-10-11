@@ -65,6 +65,70 @@ function pollForUpdates() {
     }, 30000); // Poll every 30 seconds
 }
 
+// GitHub token management functions
+function toggleSetup() {
+    const content = document.getElementById('setup-content');
+    const arrow = document.getElementById('setup-arrow');
+    
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        arrow.classList.add('rotated');
+        arrow.textContent = '▲';
+        
+        // Load existing token if present
+        const existingToken = localStorage.getItem('github_token');
+        if (existingToken) {
+            document.getElementById('github-token').value = existingToken.substring(0, 8) + '...';
+            showSetupStatus('Token loaded from browser storage', 'success');
+        }
+    } else {
+        content.style.display = 'none';
+        arrow.classList.remove('rotated');
+        arrow.textContent = '▼';
+    }
+}
+
+function saveToken() {
+    const tokenInput = document.getElementById('github-token');
+    const token = tokenInput.value.trim();
+    
+    if (!token) {
+        showSetupStatus('Please enter a GitHub token', 'error');
+        return;
+    }
+    
+    if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
+        showSetupStatus('Invalid token format. GitHub tokens start with "ghp_" or "github_pat_"', 'error');
+        return;
+    }
+    
+    // Store token in localStorage
+    localStorage.setItem('github_token', token);
+    
+    // Mask the token in the input
+    tokenInput.value = token.substring(0, 8) + '...';
+    
+    showSetupStatus('Token saved successfully! "Search Now" will trigger live scraping.', 'success');
+}
+
+function clearToken() {
+    localStorage.removeItem('github_token');
+    document.getElementById('github-token').value = '';
+    showSetupStatus('Token cleared. "Search Now" will use demo mode.', 'success');
+}
+
+function showSetupStatus(message, type) {
+    const statusDiv = document.getElementById('setup-status');
+    statusDiv.textContent = message;
+    statusDiv.className = `setup-status ${type}`;
+    
+    // Hide the message after 5 seconds
+    setTimeout(() => {
+        statusDiv.textContent = '';
+        statusDiv.className = 'setup-status';
+    }, 5000);
+}
+
 async function loadSearchResults() {
     const container = document.getElementById('results-container');
     
@@ -329,39 +393,81 @@ async function runNewSearch() {
     statusDiv.className = 'search-status searching';
     
     try {
-        // Trigger GitHub Actions workflow via repository dispatch
-        const response = await fetch('https://api.github.com/repos/jaymade/carSearch/dispatches', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json',
-                // Note: This would need a personal access token in a real implementation
-                // For security, this should be handled by a backend service
-            },
-            body: JSON.stringify({
-                event_type: 'manual-search',
-                client_payload: {
-                    triggered_by: 'search_now_button',
-                    timestamp: new Date().toISOString()
-                }
-            })
-        });
+        // Try multiple methods to trigger the GitHub Actions workflow
+        let success = false;
         
-        if (response.ok) {
-            statusDiv.textContent = 'Search triggered! GitHub Action is running the scraper. Results will appear in ~2-3 minutes.';
-            statusDiv.className = 'search-status success';
+        // Method 1: Try using workflow_dispatch (requires authentication)
+        const token = localStorage.getItem('github_token');
+        if (token) {
+            try {
+                const response = await fetch('https://api.github.com/repos/jaymade/carSearch/actions/workflows/auto-search.yml/dispatches', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        ref: 'main',
+                        inputs: {
+                            triggered_by: 'search_now_button'
+                        }
+                    })
+                });
+                
+                if (response.ok) {
+                    success = true;
+                    statusDiv.textContent = 'Search triggered! GitHub Action is running the scraper. Results will appear in ~2-3 minutes.';
+                    statusDiv.className = 'search-status success';
+                    pollForUpdates();
+                }
+            } catch (error) {
+                console.log('Workflow dispatch failed:', error);
+            }
+        }
+        
+        // Method 2: If no token or workflow dispatch failed, try repository dispatch
+        if (!success) {
+            try {
+                const response = await fetch('https://api.github.com/repos/jaymade/carSearch/dispatches', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        event_type: 'manual-search',
+                        client_payload: {
+                            triggered_by: 'search_now_button',
+                            timestamp: new Date().toISOString()
+                        }
+                    })
+                });
+                
+                if (response.ok) {
+                    success = true;
+                    statusDiv.textContent = 'Search triggered! GitHub Action is running the scraper. Results will appear in ~2-3 minutes.';
+                    statusDiv.className = 'search-status success';
+                    pollForUpdates();
+                }
+            } catch (error) {
+                console.log('Repository dispatch failed:', error);
+            }
+        }
+        
+        // Method 3: Fallback to demo mode
+        if (!success) {
+            statusDiv.textContent = 'Demo Mode: Refreshing current data (GitHub Actions requires authentication for real-time triggering)';
+            statusDiv.className = 'search-status info';
             
-            // Set up polling to check for updates
-            pollForUpdates();
-        } else {
-            // Fallback to demo behavior if API call fails
-            statusDiv.textContent = 'Search triggered! (Demo mode - GitHub Actions integration requires authentication)';
-            statusDiv.className = 'search-status success';
-            
-            // Refresh current data as fallback
-            await loadSearchResults();
-            await loadStatistics();
-            updateLastUpdatedTime();
+            // Simulate search delay and refresh current data
+            setTimeout(async () => {
+                await loadSearchResults();
+                await loadStatistics();
+                updateLastUpdatedTime();
+                statusDiv.textContent = 'Data refreshed! For real-time scraping, set up GitHub token authentication.';
+                statusDiv.className = 'search-status success';
+            }, 2000);
         }
         
     } catch (error) {
