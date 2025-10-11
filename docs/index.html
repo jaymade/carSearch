@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honda Car Search Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-car"></i> Honda Car Search Dashboard</h1>
+            <p class="subtitle">AutoPark Honda Inventory Monitor</p>
+        </header>
+
+        <!-- Search Criteria Section -->
+        <section class="search-criteria">
+            <h2><i class="fas fa-search"></i> Current Search Criteria</h2>
+            <div class="criteria-grid">
+                <div class="criteria-item">
+                    <div class="criteria-label">Make & Model</div>
+                    <div class="criteria-value">Honda Civic & Civic Hybrid</div>
+                </div>
+                <div class="criteria-item">
+                    <div class="criteria-label">Year Range</div>
+                    <div class="criteria-value">2015 - 2025 (10+ years)</div>
+                </div>
+                <div class="criteria-item">
+                    <div class="criteria-label">Inventory Type</div>
+                    <div class="criteria-value">New & Used Vehicles</div>
+                </div>
+                <div class="criteria-item">
+                    <div class="criteria-label">Dealership</div>
+                    <div class="criteria-value">AutoPark Honda (Cary, NC)</div>
+                </div>
+                <div class="criteria-item">
+                    <div class="criteria-label">Search Frequency</div>
+                    <div class="criteria-value">3x Daily (9AM, 1PM, 5PM)</div>
+                </div>
+                <div class="criteria-item">
+                    <div class="criteria-label">Notification</div>
+                    <div class="criteria-value">SMS to (919) 805-0273</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search Statistics -->
+        <section class="search-stats">
+            <h2><i class="fas fa-chart-bar"></i> Search Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="total-searches">14</div>
+                    <div class="stat-label">Total Searches</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="vehicles-found">3</div>
+                    <div class="stat-label">Vehicles Found</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="notifications-sent">2</div>
+                    <div class="stat-label">SMS Sent</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="last-search">Oct 9</div>
+                    <div class="stat-label">Last Search</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search Results Section -->
+        <section class="search-results">
+            <h2><i class="fas fa-list"></i> Recent Vehicle Matches</h2>
+            <div class="results-header">
+                <span class="last-updated">Last Updated: <span id="last-updated-time">Loading...</span></span>
+                <button class="refresh-btn" onclick="refreshResults()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            
+            <div id="results-container">
+                <!-- Results will be loaded here -->
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Loading search results...
+                </div>
+            </div>
+        </section>
+
+        <!-- Status Section -->
+        <section class="status-section">
+            <h2><i class="fas fa-info-circle"></i> System Status</h2>
+            <div class="status-grid">
+                <div class="status-item status-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>App Functional</span>
+                </div>
+                <div class="status-item status-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Web Scraping Active</span>
+                </div>
+                <div class="status-item status-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Scheduling Operational</span>
+                </div>
+                <div class="status-item status-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>SMS Blocked by Carrier</span>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>🚗 Honda Car Search App • Automated Inventory Monitoring</p>
+            <p><a href="https://www.autoparkhonda.com" target="_blank">Visit AutoPark Honda <i class="fas fa-external-link-alt"></i></a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
