@@ -29,7 +29,30 @@ def convert_data_for_web():
     previous_matches = original_data.get('previous_matches', [])
     last_search = original_data.get('last_search', '')
     total_searches = original_data.get('total_searches', 0)
-    notifications_sent = original_data.get('notifications_sent', 0)
+    
+    # Calculate unique dealerships
+    dealerships = set()
+    for vehicle in previous_matches:
+        if 'dealership' in vehicle and vehicle['dealership']:
+            dealerships.add(vehicle['dealership'])
+        elif 'url' in vehicle and 'autopark' in vehicle['url'].lower():
+            dealerships.add('AutoPark Honda')
+        elif 'url' in vehicle and 'leith' in vehicle['url'].lower():
+            if 'raleigh' in vehicle['url'].lower():
+                dealerships.add('Leith Honda Raleigh')
+            elif 'aberdeen' in vehicle['url'].lower():
+                dealerships.add('Leith Honda Aberdeen')
+            else:
+                dealerships.add('Leith Honda')
+        elif 'link' in vehicle and 'autopark' in vehicle['link'].lower():
+            dealerships.add('AutoPark Honda')
+        elif 'link' in vehicle and 'leith' in vehicle['link'].lower():
+            if 'raleigh' in vehicle['link'].lower():
+                dealerships.add('Leith Honda Raleigh')
+            elif 'aberdeen' in vehicle['link'].lower():
+                dealerships.add('Leith Honda Aberdeen')
+            else:
+                dealerships.add('Leith Honda')
     
     # Convert to web format
     web_data = {
@@ -37,7 +60,7 @@ def convert_data_for_web():
         'last_search': last_search,
         'total_searches': total_searches,
         'vehicles_tracked': len(previous_matches),
-        'notifications_sent': notifications_sent,
+        'dealerships_count': len(dealerships),
         'matches': []
     }
     
@@ -137,7 +160,7 @@ def convert_data_for_web():
         json.dump(web_data, f, indent=2)
     
     print(f"✅ Converted {len(web_data['matches'])} vehicles to web format")
-    print(f"📊 Statistics: {web_data['total_searches']} searches, {web_data['notifications_sent']} notifications")
+    print(f"📊 Statistics: {web_data['total_searches']} searches, {web_data['dealerships_count']} dealerships")
     
     return web_data
 
@@ -172,7 +195,7 @@ def create_sample_data():
         'last_search': "2025-10-09T19:03:13.087245",
         'total_searches': 14,
         'vehicles_tracked': 3,
-        'notifications_sent': 2,
+        'dealerships_count': 2,
         'matches': [
             {
                 'title': "2024 Honda Civic Hybrid",

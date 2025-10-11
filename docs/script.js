@@ -143,9 +143,12 @@ function displayResults(data) {
                             ${vehicle.mileage ? ` | <strong>Mileage:</strong> ${vehicle.mileage} miles` : ''}
                         </div>
                         <div class="vehicle-details">
+                            <strong>Dealership:</strong> ${vehicle.dealership || 'Honda Dealership'}
+                        </div>
+                        <div class="vehicle-details">
                             <strong>Found:</strong> ${foundDate} at ${foundTime}
                         </div>
-                        ${vehicle.price ? `<div class="vehicle-price">${vehicle.price}</div>` : ''}
+                        ${vehicle.price ? `<div class="vehicle-price"><strong>Price:</strong> ${vehicle.price}</div>` : ''}
                     </div>
                     <div class="vehicle-badge ${vehicle.type}">
                         ${vehicle.type.toUpperCase()}
@@ -173,8 +176,8 @@ function updateStatistics(data) {
     if (data.vehicles_tracked !== undefined) {
         document.getElementById('vehicles-found').textContent = data.vehicles_tracked;
     }
-    if (data.notifications_sent !== undefined) {
-        document.getElementById('notifications-sent').textContent = data.notifications_sent;
+    if (data.dealerships_count !== undefined) {
+        document.getElementById('notifications-sent').textContent = data.dealerships_count;
     }
     if (data.last_search) {
         const lastSearch = new Date(data.last_search).toLocaleDateString('en-US', {

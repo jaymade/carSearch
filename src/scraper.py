@@ -341,6 +341,88 @@ class HondaScraper:
         logger.info(f"Found {len(vehicles)} {inventory_type} vehicles")
         return vehicles
     
+    def extract_vehicle_info_from_url(self, url: str) -> Dict:
+        """Extract vehicle information from URL parameters"""
+        from urllib.parse import urlparse, parse_qs
+        
+        vehicle_info = {}
+        parsed_url = urlparse(url)
+        params = parse_qs(parsed_url.query)
+        
+        # Extract year from URL path or parameters
+        year_match = re.search(r'(20\d{2})', url)
+        if year_match:
+            vehicle_info['year'] = year_match.group(1)
+        
+        # Extract make, model, and trim from parameters
+        if 'make' in params:
+            vehicle_info['make'] = params['make'][0] if params['make'] else 'Honda'
+        else:
+            vehicle_info['make'] = 'Honda'  # Default for Honda dealerships
+            
+        if 'model' in params:
+            models = params['model']
+            # Handle multiple model parameters (like Civic Hybrid and Civic)
+            for model in models:
+                if 'civic' in model.lower():
+                    vehicle_info['model'] = model
+                    break
+            if 'model' not in vehicle_info and models:
+                vehicle_info['model'] = models[0]
+        
+        if 'trim' in params:
+            trims = params['trim']
+            if trims:
+                vehicle_info['trim'] = ', '.join(trims)
+        
+        # Extract color if available
+        if 'normalExteriorColor' in params:
+            vehicle_info['color'] = params['normalExteriorColor'][0]
+        elif 'color' in params:
+            vehicle_info['color'] = params['color'][0]
+            
+        # Extract body style
+        if 'normalBodyStyle' in params:
+            vehicle_info['body_style'] = params['normalBodyStyle'][0]
+        elif 'bodyStyle' in params:
+            vehicle_info['body_style'] = params['bodyStyle'][0]
+        
+        return vehicle_info
+
+    def create_vehicle_title(self, vehicle_info: Dict, text_title: str = None) -> str:
+        """Create a meaningful vehicle title from extracted information"""
+        parts = []
+        
+        # Add year if available
+        if 'year' in vehicle_info:
+            parts.append(vehicle_info['year'])
+        
+        # Add make
+        if 'make' in vehicle_info:
+            parts.append(vehicle_info['make'])
+        
+        # Add model
+        if 'model' in vehicle_info:
+            parts.append(vehicle_info['model'])
+        elif text_title and text_title.strip() and text_title.strip() != 'Hybrid':
+            parts.append(text_title.strip())
+        
+        # Add trim if available
+        if 'trim' in vehicle_info:
+            parts.append(f"({vehicle_info['trim']})")
+        
+        # Add color if available
+        if 'color' in vehicle_info:
+            parts.append(f"in {vehicle_info['color']}")
+            
+        # Fallback if no meaningful info extracted
+        if not parts:
+            if text_title and text_title.strip():
+                return text_title.strip()
+            return "Honda Civic"
+        
+        return ' '.join(parts)
+
     def extract_vehicles_from_page(self, soup, base_url: str) -> List[Dict]:
         """Extract vehicle information from a single page"""
         vehicles = []
@@ -356,7 +438,8 @@ class HondaScraper:
         vehicle_patterns = [
             r'/new/Honda/.*Civic',
             r'/used/Honda/.*Civic',
-            r'/inventory/.*Honda.*Civic'
+            r'/inventory/.*Honda.*Civic',
+            r'\?.*model.*[Cc]ivic'  # URLs with civic in parameters
         ]
         
         for pattern in vehicle_patterns:
@@ -365,9 +448,19 @@ class HondaScraper:
             
             for link in vehicle_links:
                 try:
+                    link_url = urljoin(base_url, link.get('href', ''))
+                    text_title = link.get_text(strip=True)
+                    
+                    # Extract vehicle info from URL parameters
+                    url_info = self.extract_vehicle_info_from_url(link_url)
+                    
+                    # Create a meaningful title
+                    meaningful_title = self.create_vehicle_title(url_info, text_title)
+                    
                     vehicle_info = {
-                        'title': link.get_text(strip=True) or 'Honda Vehicle',
-                        'url': urljoin(base_url, link.get('href', '')),
+                        'title': meaningful_title,
+                        'url': link_url,
+                        **url_info  # Include all extracted info
                     }
                     
                     # Look for price in nearby elements
@@ -383,7 +476,30 @@ class HondaScraper:
                 except Exception as e:
                     logger.debug(f"Error processing vehicle link: {e}")
         
-        # Approach 2: Look for text patterns that indicate vehicles
+        # Approach 2: Look for inventory page links that might contain vehicle data
+        if not vehicles:
+            # Look for links to inventory pages with Honda Civic parameters
+            inventory_links = soup.find_all('a', href=re.compile(r'inventory.*honda|honda.*inventory', re.I))
+            logger.debug(f"Found {len(inventory_links)} inventory links")
+            
+            for link in inventory_links:
+                try:
+                    link_url = urljoin(base_url, link.get('href', ''))
+                    if 'civic' in link_url.lower():
+                        url_info = self.extract_vehicle_info_from_url(link_url)
+                        meaningful_title = self.create_vehicle_title(url_info, link.get_text(strip=True))
+                        
+                        vehicle_info = {
+                            'title': meaningful_title,
+                            'url': link_url,
+                            **url_info
+                        }
+                        vehicles.append(vehicle_info)
+                        logger.debug(f"Found inventory vehicle: {meaningful_title}")
+                except Exception as e:
+                    logger.debug(f"Error processing inventory link: {e}")
+        
+        # Approach 3: Look for text patterns that indicate vehicles
         if not vehicles:
             # Look for Honda Civic text patterns with years
             civic_patterns = [
@@ -395,14 +511,15 @@ class HondaScraper:
             for pattern in civic_patterns:
                 matches = re.findall(pattern, soup.get_text(), re.I)
                 for match in matches:
+                    title_text = match if isinstance(match, str) else ' '.join(match)
                     vehicle_info = {
-                        'title': match if isinstance(match, str) else ' '.join(match),
+                        'title': title_text,
                         'url': base_url,  # Fallback URL
                     }
                     vehicles.append(vehicle_info)
                     logger.debug(f"Found vehicle by pattern: {vehicle_info['title']}")
         
-        # Approach 3: Try broader Honda search
+        # Approach 4: Try broader Honda search
         if not vehicles:
             logger.debug("Trying broader search approach...")
             
@@ -412,12 +529,17 @@ class HondaScraper:
             
             for link in honda_links:
                 text = link.get_text(strip=True)
+                link_url = urljoin(base_url, link.get('href', ''))
+                url_info = self.extract_vehicle_info_from_url(link_url)
+                meaningful_title = self.create_vehicle_title(url_info, text)
+                
                 vehicle_info = {
-                    'title': text,
-                    'url': urljoin(base_url, link.get('href', '')),
+                    'title': meaningful_title,
+                    'url': link_url,
+                    **url_info
                 }
                 vehicles.append(vehicle_info)
-                logger.debug(f"Found Honda vehicle: {text}")
+                logger.debug(f"Found Honda vehicle: {meaningful_title}")
         
         # Remove duplicates based on URL or title
         unique_vehicles = []
