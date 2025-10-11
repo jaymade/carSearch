@@ -189,8 +189,25 @@ function updateStatistics(data) {
 }
 
 async function loadStatistics() {
-    // This would normally load from your statistics API
-    // For now, using the same data source
+    try {
+        const response = await fetch('data.json');
+        if (response.ok) {
+            const data = await response.json();
+            updateStatistics(data);
+        } else {
+            console.log('Failed to load statistics data');
+        }
+    } catch (error) {
+        console.log('Error loading statistics:', error);
+        // Use sample data as fallback
+        const sampleData = {
+            total_searches: 14,
+            vehicles_tracked: 6,
+            dealerships_count: 3,
+            last_search: "2025-10-11T13:28:00.857456"
+        };
+        updateStatistics(sampleData);
+    }
 }
 
 function refreshResults() {
