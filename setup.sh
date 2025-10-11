@@ -25,29 +25,17 @@ source venv/bin/activate
 echo "⬇️  Installing Python packages..."
 pip install -r requirements.txt
 
-# Copy environment template
-if [ ! -f .env ]; then
-    echo "⚙️  Creating environment configuration..."
-    cp .env.example .env
-    echo "✅ Created .env file from template"
-    echo ""
-    echo "🔑 IMPORTANT: Please edit the .env file and add your Twilio credentials:"
-    echo "   1. Sign up at https://www.twilio.com"
-    echo "   2. Get your Account SID and Auth Token from the Twilio Console"
-    echo "   3. Purchase a phone number for sending SMS"
-    echo "   4. Update the .env file with your credentials"
-    echo ""
-else
-    echo "⚠️  .env file already exists, skipping..."
-fi
+# Create log file
+echo "📄 Creating log file..."
+touch search.log
 
 echo ""
 echo "🎉 Setup complete!"
 echo ""
 echo "Next steps:"
-echo "1. Configure your .env file with Twilio credentials"
-echo "2. Test SMS: python main.py --test-sms"
-echo "3. Run a test search: python main.py --search-now"
-echo "4. Start the scheduler: python main.py"
+echo "1. Run a test search: python3 src/main.py --search-now"
+echo "2. Check search statistics: python3 src/main.py --stats"
+echo "3. Start the automated scheduler: python3 src/main.py"
+echo "4. View web dashboard: https://[your-username].github.io/honda-car-search/"
 echo ""
-echo "For help: python main.py --help"
+echo "For help: python3 src/main.py --help"

@@ -6,6 +6,7 @@ Convert previous_matches.json to web-friendly format
 import json
 import sys
 import os
+import re
 from datetime import datetime
 
 # Add src directory to path
@@ -24,52 +25,90 @@ def convert_data_for_web():
         print("previous_matches.json not found")
         return
     
-    # Extract statistics
-    stats = original_data.get('statistics', {})
-    search_history = original_data.get('search_history', [])
+    # Extract statistics from the actual data structure
     previous_matches = original_data.get('previous_matches', [])
+    last_search = original_data.get('last_search', '')
+    total_searches = original_data.get('total_searches', 0)
+    notifications_sent = original_data.get('notifications_sent', 0)
     
     # Convert to web format
     web_data = {
         'last_updated': datetime.now().isoformat(),
-        'last_search': stats.get('last_search_time', ''),
-        'total_searches': stats.get('total_searches', 0),
+        'last_search': last_search,
+        'total_searches': total_searches,
         'vehicles_tracked': len(previous_matches),
-        'notifications_sent': stats.get('notifications_sent', 0),
+        'notifications_sent': notifications_sent,
         'matches': []
     }
     
     # Process vehicle matches
     for vehicle in previous_matches:
-        # Try to determine vehicle type based on data
-        vehicle_type = 'unknown'
+        # Get basic vehicle information
+        title = vehicle.get('title', 'Honda Vehicle')
+        url = vehicle.get('url', '')
+        first_seen = vehicle.get('first_seen', '')
+        
+        # Try to extract year from title or URL
         year = 'Unknown'
+        year_match = re.search(r'20\d{2}', title)
+        if year_match:
+            year = year_match.group()
+        elif url:
+            year_match = re.search(r'20\d{2}', url)
+            if year_match:
+                year = year_match.group()
         
-        # Extract year from title if possible
-        title = vehicle.get('title', 'Unknown Vehicle')
-        if any(str(y) in title for y in range(2015, 2026)):
-            for y in range(2015, 2026):
-                if str(y) in title:
-                    year = str(y)
-                    break
-        
-        # Determine if new or used based on year
+        # Determine vehicle type based on year or URL
+        vehicle_type = 'unknown'
         current_year = datetime.now().year
         if year != 'Unknown':
-            vehicle_type = 'new' if int(year) >= current_year else 'used'
+            year_int = int(year)
+            vehicle_type = 'new' if year_int >= current_year else 'used'
+        elif 'new-inventory' in url:
+            vehicle_type = 'new'
+        elif 'used-inventory' in url:
+            vehicle_type = 'used'
+        
+        # Extract dealership info from URL
+        dealership = 'Honda Dealership'
+        if 'leithhonda.com' in url:
+            dealership = 'Leith Honda Raleigh'
+        elif 'leithhondaaberdeen.com' in url:
+            dealership = 'Leith Honda Aberdeen'
+        elif 'autoparkhonda.com' in url:
+            dealership = 'AutoPark Honda'
+        
+        # Enhance title if it's too basic
+        enhanced_title = title
+        if title == 'Hybrid' or len(title) < 10:
+            trim = extract_trim_from_title(title)
+            enhanced_title = f"Honda Civic {trim}"
+            if year != 'Unknown':
+                enhanced_title = f"{year} {enhanced_title}"
+        
+        # Format found date
+        found_date = first_seen
+        if found_date:
+            try:
+                # Convert ISO datetime to readable format
+                dt = datetime.fromisoformat(found_date.replace('Z', '+00:00'))
+                found_date = dt.strftime('%Y-%m-%d %H:%M')
+            except:
+                pass
         
         # Create vehicle entry
         vehicle_entry = {
-            'title': title,
+            'title': enhanced_title,
             'year': year,
             'make': 'Honda',
             'model': 'Civic',
             'trim': extract_trim_from_title(title),
             'type': vehicle_type,
             'price': vehicle.get('price', 'Not available'),
-            'found_date': vehicle.get('found_time', ''),
-            'link': determine_search_link(title),
-            'dealer_link': vehicle.get('link', '')
+            'found_date': found_date or 'Unknown',
+            'dealership': dealership,
+            'link': url or determine_search_link(title),
+            'dealer_link': url
         }
         
         web_data['matches'].append(vehicle_entry)

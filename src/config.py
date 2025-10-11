@@ -4,12 +4,6 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Twilio Configuration
-TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
-TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
-TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER')
-TARGET_PHONE_NUMBER = os.getenv('TARGET_PHONE_NUMBER')
-
 # Leith Honda Dealership Configuration
 LEITH_HONDA_LOCATIONS = {
     'leith_honda_raleigh': {
@@ -63,9 +57,8 @@ BUSINESS_HOURS = {
 
 SEARCH_TIMES = ['09:00', '13:00', '17:00']  # 9 AM, 1 PM, 5 PM
 
-# Notification Configuration
-SEND_NO_MATCHES_NOTIFICATION = True  # Send SMS when no vehicles match criteria
-NO_MATCHES_NOTIFICATION_FREQUENCY = 'daily'  # 'always', 'daily', 'weekly', 'never'
+# Web Dashboard Configuration
+WEB_DASHBOARD_ENABLED = True
 
 # File paths
 DATA_FILE = 'previous_matches.json'

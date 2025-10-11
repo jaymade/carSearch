@@ -1,17 +1,17 @@
 # Honda Car Search App
 
-🚗 **Automated Honda Civic inventory monitoring and SMS notification system**
+🚗 **Automated Honda Civic inventory monitoring system with web dashboard**
 
 ## 📖 Overview
 
-This application automatically searches Leith Honda locations (Raleigh, Aberdeen) plus AutoPark Honda (Cary) for Honda Civics (2015 and newer) and sends SMS notifications when matches are found. It runs scheduled searches 3 times daily during business hours and uses Twilio for SMS delivery.
+This application automatically searches Leith Honda locations (Raleigh, Aberdeen) plus AutoPark Honda (Cary) for Honda Civics (2015 and newer) and tracks matches on a web dashboard. It runs scheduled searches 3 times daily during business hours and displays results on GitHub Pages.
 
 ## ✨ Features
 
 - 🔍 **Smart Inventory Scanning** - Searches both new and used Honda Civic inventory
-- 📱 **SMS Notifications** - Real-time alerts with vehicle details and direct links
+- 🌐 **Web Dashboard** - Live inventory display with vehicle details and direct links  
 - ⏰ **Automated Scheduling** - Runs 3x daily (9AM, 1PM, 5PM) on weekdays
-- 🚫 **Duplicate Prevention** - Tracks previous matches to avoid repeat notifications  
+- 🚫 **Duplicate Prevention** - Tracks previous matches to avoid repeat entries
 - 📊 **Analytics & Logging** - Comprehensive search history and performance metrics
 - 🎯 **Customizable Search** - Configurable year range, models, and trim levels
 
@@ -19,7 +19,7 @@ This application automatically searches Leith Honda locations (Raleigh, Aberdeen
 
 ### Prerequisites
 - Python 3.8+
-- Twilio Account (for SMS notifications)
+- Git (for repository management)
 - macOS/Linux environment
 
 ### Installation
@@ -32,22 +32,11 @@ cd honda-car-search
 # Run setup script
 chmod +x setup.sh
 ./setup.sh
-
-# Configure environment variables
-cp .env.example .env
-# Edit .env with your Twilio credentials
 ```
 
-### Configuration
+### Web Dashboard
 
-Create a `.env` file with your Twilio credentials:
-
-```bash
-TWILIO_ACCOUNT_SID=your_account_sid_here
-TWILIO_AUTH_TOKEN=your_auth_token_here  
-TWILIO_PHONE_NUMBER=+1234567890
-TARGET_PHONE_NUMBER=your_phone_number_here
-```
+View the live inventory dashboard at: `https://[your-username].github.io/honda-car-search/`
 
 ## 📋 Usage
 
@@ -55,18 +44,18 @@ TARGET_PHONE_NUMBER=your_phone_number_here
 ```bash
 python3 src/main.py --search-now    # Run immediate search
 python3 src/main.py --stats         # View search statistics  
-python3 src/main.py --test-sms      # Test SMS functionality
+python3 src/main.py --export-data   # Export search data to JSON
 ```
 
 ### Automated Scheduling
 ```bash
-python3 src/main.py --schedule      # Start automated scheduler
+python3 src/main.py                 # Start automated scheduler (default)
 ```
 
-### SMS Troubleshooting
+### Debugging
 ```bash
-python3 diagnostics/fix_sms_delivery.py     # Diagnose SMS delivery issues
-python3 diagnostics/get_local_number.py     # Purchase local phone number
+python3 diagnostics/debug_scraper.py        # Debug web scraping
+python3 diagnostics/debug_html.py          # Debug HTML parsing
 ```
 
 ## 🛠️ Architecture
@@ -75,16 +64,19 @@ python3 diagnostics/get_local_number.py     # Purchase local phone number
 ├── src/                    # Core application files
 │   ├── main.py            # Primary application entry point
 │   ├── scraper.py         # Web scraping engine for Honda inventory
-│   ├── sms_notifier.py    # Twilio SMS integration
 │   ├── scheduler.py       # Automated search scheduling  
 │   ├── data_manager.py    # Data persistence and history
+│   ├── web_updater.py     # Web dashboard integration
 │   └── config.py          # Configuration management
+├── docs/                  # Web dashboard files
+│   ├── index.html         # GitHub Pages dashboard
+│   ├── script.js          # Dashboard JavaScript
+│   ├── styles.css         # Dashboard styling
+│   └── convert_data.py    # Data conversion utility
 ├── diagnostics/           # Troubleshooting utilities
-│   ├── fix_sms_delivery.py
-│   ├── simple_test_sms.py
-│   ├── debug_scraper.py
-│   └── test_formats.py
-├── .env                   # Environment variables (secure)
+│   ├── debug_scraper.py   # Web scraping diagnostics
+│   ├── debug_html.py      # HTML parsing diagnostics
+│   └── email_notifier.py  # Alternative notification system
 ├── requirements.txt       # Python dependencies
 └── README.md             # This documentation
 ```
@@ -92,35 +84,35 @@ python3 diagnostics/get_local_number.py     # Purchase local phone number
 ## 📊 Current Status
 
 - ✅ **Core Functionality**: Fully operational
-- ✅ **Vehicle Detection**: Successfully finding inventory
-- ✅ **SMS Integration**: Twilio API working perfectly
-- ⚠️ **SMS Delivery**: May require carrier whitelisting (Error 30034)
+- ✅ **Vehicle Detection**: Successfully finding inventory across 3 dealerships
+- ✅ **Web Dashboard**: Live inventory display on GitHub Pages
+- ✅ **Multi-Location Search**: Covers Leith Honda Raleigh, Aberdeen, and AutoPark Honda
 
 ## 🔧 Troubleshooting
 
-### SMS Not Being Received?
-1. Run diagnostic: `python3 diagnostics/fix_sms_delivery.py`
-2. Contact your carrier to whitelist Twilio numbers
-3. Try a local area code number: `python3 diagnostics/get_local_number.py`
+### Web Dashboard Not Updating?
+1. Check GitHub Actions are enabled for automatic deployment
+2. Verify `docs/data.json` is being updated correctly
+3. Run `python3 docs/convert_data.py` manually to test conversion
 
 ### No Vehicles Found?
 - Check `search.log` for detailed scraping logs
 - Run `python3 diagnostics/debug_scraper.py` for diagnostics
-- Verify AutoPark Honda website accessibility
+- Verify Honda dealership website accessibility
 
 ## 📈 Statistics
 
-- **14 total searches** performed
-- **3 vehicles** tracked and monitored
-- **2 SMS notifications** sent successfully
+- **Multi-location search** across 3 Honda dealerships
+- **Automated scheduling** with 3 daily searches
+- **Web dashboard integration** with GitHub Pages
 - **100% uptime** since deployment
 
 ## 🔒 Security
 
-- Environment variables for credential management
-- No hardcoded API keys or sensitive data
-- Secure Twilio API integration
-- Local data storage only
+- Local data storage and processing
+- No external API dependencies for notifications
+- Secure GitHub repository with proper access controls
+- Environment isolation and dependency management
 
 ## 📝 License
 

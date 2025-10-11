@@ -1,45 +1,48 @@
 {
-  "last_updated": "2025-10-11T11:11:32.267622",
-  "last_search": "",
-  "total_searches": 0,
+  "last_updated": "2025-10-11T12:07:22.183502",
+  "last_search": "2025-10-11T12:02:00.115515",
+  "total_searches": 17,
   "vehicles_tracked": 3,
-  "notifications_sent": 0,
+  "notifications_sent": 2,
   "matches": [
     {
-      "title": "Hybrid",
+      "title": "Honda Civic Hybrid",
       "year": "Unknown",
       "make": "Honda",
       "model": "Civic",
       "trim": "Hybrid",
-      "type": "unknown",
+      "type": "new",
       "price": "Not available",
-      "found_date": "",
+      "found_date": "2025-10-09 19:03",
+      "dealership": "AutoPark Honda",
       "link": "https://www.autoparkhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
-      "dealer_link": ""
+      "dealer_link": "https://www.autoparkhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
     },
     {
-      "title": "Hybrid",
+      "title": "Honda Civic Hybrid",
       "year": "Unknown",
       "make": "Honda",
       "model": "Civic",
       "trim": "Hybrid",
-      "type": "unknown",
+      "type": "used",
       "price": "Not available",
-      "found_date": "",
-      "link": "https://www.autoparkhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
-      "dealer_link": ""
+      "found_date": "2025-10-09 19:03",
+      "dealership": "AutoPark Honda",
+      "link": "https://www.autoparkhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
+      "dealer_link": "https://www.autoparkhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
     },
     {
-      "title": "Hybrid",
+      "title": "Honda Civic Hybrid",
       "year": "Unknown",
       "make": "Honda",
       "model": "Civic",
       "trim": "Hybrid",
-      "type": "unknown",
+      "type": "new",
       "price": "Not available",
-      "found_date": "",
-      "link": "https://www.autoparkhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
-      "dealer_link": ""
+      "found_date": "2025-10-09 18:33",
+      "dealership": "AutoPark Honda",
+      "link": "https://www.autoparkhonda.com/new-inventory/index.htm?ddcref=fluency&gad_campaignid=22734733881&gad_source=1&gbraid=0AAAABAaG6mfQOpK2diCaBGeCTGc4LhqeO&gclid=Cj0KCQjw9JLHBhC-ARIsAK4PhcqCXY-gm7O5MRM9DBDgS9_R_h1Rl40-Wcmu9q8NUNFidCrtbx3Npa4aAuCmEALw_wcB&jdp_adid=%7Badid%7D&jdp_campaign=honda%20Garner%20local%20geo_multi_honda_multi_a&jdp_campaign_platform=google&jdp_channel=search&jdp_cid=22734733881&jdp_digadprov=dealerdotcom&make=Honda&tcdadid=761417592946&tcdcmpid=2877363&utm_source=google&model=Civic%20Hybrid&model=Civic&trim=Sport&trim=Sport%20Touring&normalExteriorColor=Black&normalBodyStyle=Sedan",
+      "dealer_link": "https://www.autoparkhonda.com/new-inventory/index.htm?ddcref=fluency&gad_campaignid=22734733881&gad_source=1&gbraid=0AAAABAaG6mfQOpK2diCaBGeCTGc4LhqeO&gclid=Cj0KCQjw9JLHBhC-ARIsAK4PhcqCXY-gm7O5MRM9DBDgS9_R_h1Rl40-Wcmu9q8NUNFidCrtbx3Npa4aAuCmEALw_wcB&jdp_adid=%7Badid%7D&jdp_campaign=honda%20Garner%20local%20geo_multi_honda_multi_a&jdp_campaign_platform=google&jdp_channel=search&jdp_cid=22734733881&jdp_digadprov=dealerdotcom&make=Honda&tcdadid=761417592946&tcdcmpid=2877363&utm_source=google&model=Civic%20Hybrid&model=Civic&trim=Sport&trim=Sport%20Touring&normalExteriorColor=Black&normalBodyStyle=Sedan"
     }
   ]
 }

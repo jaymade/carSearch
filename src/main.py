@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Honda Car Search Notification System
+Honda Car Search System
 
-Automatically searches AutoPark Honda website for specific Honda Civic models
-and sends SMS notifications when matches are found.
+Automatically searches Honda dealership websites for specific Honda models
+and tracks inventory matches with web dashboard display.
 """
 
 import logging
@@ -11,7 +11,6 @@ import sys
 import argparse
 from datetime import datetime
 from scraper import HondaScraper
-from sms_notifier import SMSNotifier
 from data_manager import DataManager
 from scheduler import SearchScheduler
 from config import LOG_FILE
@@ -29,13 +28,12 @@ def setup_logging(log_level=logging.INFO):
     )
 
 def perform_search():
-    """Perform a single search and send notifications if needed"""
+    """Perform a single search and track inventory matches"""
     logger = logging.getLogger(__name__)
     
     try:
         # Initialize components
         scraper = HondaScraper()
-        notifier = SMSNotifier()
         data_manager = DataManager()
         
         logger.info("Starting Honda car search...")
@@ -48,37 +46,17 @@ def perform_search():
         new_vehicles = data_manager.get_new_vehicles(current_vehicles)
         logger.info(f"Found {len(new_vehicles)} new vehicles")
         
-        notifications_sent = False
-        no_matches_notification_sent = False
-        
-        # Send notifications for new vehicles
+        # Track new vehicles
         if new_vehicles:
-            logger.info(f"Sending notification for {len(new_vehicles)} new vehicles")
-            notifications_sent = notifier.send_notification(new_vehicles)
-            
-            if notifications_sent:
-                # Add new vehicles to tracking
-                data_manager.add_vehicles(new_vehicles)
-                logger.info("Notifications sent successfully")
-            else:
-                logger.error("Failed to send notifications")
+            logger.info(f"Tracking {len(new_vehicles)} new vehicles")
+            # Add new vehicles to tracking
+            data_manager.add_vehicles(new_vehicles)
+            logger.info("New vehicles added to tracking")
         else:
             logger.info("No new vehicles found")
-            
-            # Send "no matches" notification if enabled and appropriate
-            from config import SEND_NO_MATCHES_NOTIFICATION, NO_MATCHES_NOTIFICATION_FREQUENCY
-            
-            if SEND_NO_MATCHES_NOTIFICATION and data_manager.should_send_no_matches_notification(NO_MATCHES_NOTIFICATION_FREQUENCY):
-                logger.info("Sending 'no matches found' notification")
-                no_matches_notification_sent = notifier.send_no_matches_notification()
-                
-                if no_matches_notification_sent:
-                    logger.info("No matches notification sent successfully")
-                else:
-                    logger.error("Failed to send no matches notification")
         
         # Update statistics
-        data_manager.update_search_stats(len(current_vehicles), notifications_sent, no_matches_notification_sent)
+        data_manager.update_search_stats(len(current_vehicles), len(new_vehicles) > 0, False)
         
         # Update web dashboard
         try:
@@ -96,20 +74,11 @@ def perform_search():
         
     except Exception as e:
         logger.error(f"Error during search: {e}")
-        
-        # Try to send error notification
-        try:
-            notifier = SMSNotifier()
-            notifier.send_error_notification(f"Search failed: {str(e)}")
-        except:
-            pass
-        
         return 0
 
 def main():
     """Main application entry point"""
-    parser = argparse.ArgumentParser(description='Honda Car Search Notification System')
-    parser.add_argument('--test-sms', action='store_true', help='Send a test SMS message')
+    parser = argparse.ArgumentParser(description='Honda Car Search System')
     parser.add_argument('--search-now', action='store_true', help='Perform a search right now')
     parser.add_argument('--stats', action='store_true', help='Show search statistics')
     parser.add_argument('--reset-data', action='store_true', help='Reset all stored data')
@@ -126,17 +95,7 @@ def main():
     logger.info("Honda Car Search Application Started")
     
     try:
-        if args.test_sms:
-            # Test SMS functionality
-            logger.info("Testing SMS functionality...")
-            notifier = SMSNotifier()
-            if notifier.send_test_message():
-                print("✅ Test SMS sent successfully!")
-            else:
-                print("❌ Failed to send test SMS. Check your Twilio configuration.")
-            return
-        
-        elif args.search_now:
+        if args.search_now:
             # Perform immediate search
             logger.info("Performing manual search...")
             new_count = perform_search()
@@ -152,7 +111,6 @@ def main():
             print("=" * 40)
             print(f"Total searches performed: {stats['total_searches']}")
             print(f"Total vehicles tracked: {stats['total_matches_tracked']}")
-            print(f"Notifications sent: {stats['notifications_sent']}")
             print(f"Last search: {stats['last_search'] or 'Never'}")
             print(f"Data file size: {stats['data_file_size']} bytes")
             
@@ -183,10 +141,10 @@ def main():
         
         else:
             # Start scheduled operation
-            print("🚗 Honda Car Search Notification System")
+            print("🚗 Honda Car Search System")
             print("=" * 50)
             print(f"Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-            print("Monitoring AutoPark Honda for new inventory matches...")
+            print("Monitoring Honda dealerships for new inventory matches...")
             print("Press Ctrl+C to stop")
             
             # Create scheduler with search function
