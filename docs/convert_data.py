@@ -48,15 +48,28 @@ def convert_data_for_web():
         url = vehicle.get('url', '')
         first_seen = vehicle.get('first_seen', '')
         
-        # Try to extract year from title or URL
+        # Try to extract year from multiple sources
         year = 'Unknown'
+        
+        # Method 1: Look for year in title
         year_match = re.search(r'20\d{2}', title)
         if year_match:
             year = year_match.group()
+        
+        # Method 2: Look for year in URL parameters or path
         elif url:
             year_match = re.search(r'20\d{2}', url)
             if year_match:
                 year = year_match.group()
+        
+        # Method 3: For current inventory, assume recent model years
+        if year == 'Unknown':
+            # If this is a new inventory URL, assume current or next model year
+            if 'new-inventory' in url:
+                year = '2025'  # Current model year
+            elif 'used-inventory' in url and 'Hybrid' in title:
+                # For used hybrids, assume recent model years (2020-2024)
+                year = '2023'  # Common recent hybrid year
         
         # Determine vehicle type based on year or URL
         vehicle_type = 'unknown'
@@ -83,8 +96,10 @@ def convert_data_for_web():
         if title == 'Hybrid' or len(title) < 10:
             trim = extract_trim_from_title(title)
             enhanced_title = f"Honda Civic {trim}"
-            if year != 'Unknown':
-                enhanced_title = f"{year} {enhanced_title}"
+        
+        # Always add year to beginning if available
+        if year != 'Unknown' and not year in enhanced_title:
+            enhanced_title = f"{year} {enhanced_title}"
         
         # Format found date to be JavaScript-friendly
         found_date = first_seen
