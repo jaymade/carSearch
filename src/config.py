@@ -35,17 +35,19 @@ LEITH_HONDA_LOCATIONS['autopark_honda'] = AUTOPARK_HONDA
 SEARCH_URL_NEW = AUTOPARK_HONDA['new_url']
 SEARCH_URL_USED = AUTOPARK_HONDA['used_url']
 
-# Current year for calculating 10 years old or newer
+# Search year range updated to match URL parameters
 CURRENT_YEAR = 2025
-MIN_YEAR = CURRENT_YEAR - 10  # 2015 and newer
+MIN_YEAR = 2015  # Specific year from URL
+MAX_YEAR = 2026  # Extended to 2026 as per URL
 
 SEARCH_PARAMS = {
     'make': 'Honda',
-    'model': ['Civic Hybrid', 'Civic'],
-    'trim': ['Sport', 'Sport Touring', 'EX', 'LX'],  # Expanded trims
+    'model': ['Civic', 'Civic Sedan'],  # Updated to match URL
+    'trim': ['Sport', 'Sport Touring'],  # Specific trims from URL
     'min_year': MIN_YEAR,  # 2015 and newer
-    'normalExteriorColor': 'Black',
-    'normalBodyStyle': 'Sedan'
+    'max_year': MAX_YEAR,  # Up to 2026
+    'normalExteriorColor': 'Black',  # Specific color from URL
+    'inventory_type': 'used'  # Used vehicles only as per URL
 }
 
 # Scheduling Configuration
