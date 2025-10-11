@@ -148,7 +148,7 @@ function displayResults(data) {
                         <div class="vehicle-details">
                             <strong>Found:</strong> ${foundDate} at ${foundTime}
                         </div>
-                        ${vehicle.price ? `<div class="vehicle-price"><strong>Price:</strong> ${vehicle.price}</div>` : ''}
+                        <div class="vehicle-price"><strong>Price:</strong> ${vehicle.price || 'Not available'}</div>
                     </div>
                     <div class="vehicle-badge ${vehicle.type}">
                         ${vehicle.type.toUpperCase()}
