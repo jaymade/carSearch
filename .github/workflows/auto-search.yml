@@ -1,10 +1,6 @@
-name: Honda Car Search Automation
+name: Honda Car Search Manual Trigger
 
 on:
-  schedule:
-    # Run daily at 11:00 AM EST (16:00 UTC)
-    - cron: '0 16 * * *'
-  
   repository_dispatch:
     types: [manual-search]
     
@@ -16,15 +12,24 @@ on:
         required: false
         default: 'github_actions_tab'
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   search-vehicles:
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: write
+      actions: read
+      
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -62,17 +67,17 @@ jobs:
     
     - name: Commit and push results
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
         git add -A
         
         if git diff --staged --quiet; then
           echo "No changes detected, skipping commit"
         else
           TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S EST')
-          TRIGGER_SOURCE="${{ github.event.inputs.triggered_by || github.event.client_payload.triggered_by || 'scheduled' }}"
-          git commit -m "🚗 Automated search results - ${TIMESTAMP} - Found ${{ steps.count.outputs.count }} vehicles - Triggered by: ${TRIGGER_SOURCE}"
-          git push
+          TRIGGER_SOURCE="${{ github.event.inputs.triggered_by || github.event.client_payload.triggered_by || 'manual' }}"
+          git commit -m "🚗 Manual search results - ${TIMESTAMP} - Found ${{ steps.count.outputs.count }} vehicles - Triggered by: ${TRIGGER_SOURCE}"
+          git push origin ${{ github.ref_name }}
         fi
     
     - name: Update search status

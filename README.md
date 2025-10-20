@@ -1,16 +1,16 @@
 # Honda Car Search App
 
-🚗 **Automated Honda Civic inventory monitoring system with web dashboard**
+🚗 **Manual Honda Civic inventory monitoring system with web dashboard**
 
 ## 📖 Overview
 
-This application automatically searches Leith Honda locations (Raleigh, Aberdeen) plus AutoPark Honda (Cary) for Honda Civics (2015 and newer) and tracks matches on a web dashboard. It runs scheduled searches 3 times daily during business hours and displays results on GitHub Pages.
+This application searches for Honda Civics (2015 and newer) and tracks matches on a web dashboard. Searches are triggered manually via the "Search Now" button on the dashboard, providing on-demand inventory checking with results displayed on GitHub Pages.
 
 ## ✨ Features
 
 - 🔍 **Smart Inventory Scanning** - Searches both new and used Honda Civic inventory
 - 🌐 **Web Dashboard** - Live inventory display with vehicle details and direct links  
-- ⏰ **Automated Scheduling** - Runs 3x daily (9AM, 1PM, 5PM) on weekdays
+- 🎯 **Manual Search Control** - Run searches on-demand via "Search Now" button
 - 🚫 **Duplicate Prevention** - Tracks previous matches to avoid repeat entries
 - 📊 **Analytics & Logging** - Comprehensive search history and performance metrics
 - 🎯 **Customizable Search** - Configurable year range, models, and trim levels
@@ -47,9 +47,10 @@ python3 src/main.py --stats         # View search statistics
 python3 src/main.py --export-data   # Export search data to JSON
 ```
 
-### Automated Scheduling
+### Manual Search Execution
 ```bash
-python3 src/main.py                 # Start automated scheduler (default)
+python3 src/main.py --search-now           # Run immediate search
+python3 src/main.py                         # Same as above (manual trigger)
 ```
 
 ### Debugging
@@ -64,7 +65,7 @@ python3 diagnostics/debug_html.py          # Debug HTML parsing
 ├── src/                    # Core application files
 │   ├── main.py            # Primary application entry point
 │   ├── scraper.py         # Web scraping engine for Honda inventory
-│   ├── scheduler.py       # Automated search scheduling  
+│   ├── scheduler.py       # Search execution logic  
 │   ├── data_manager.py    # Data persistence and history
 │   ├── web_updater.py     # Web dashboard integration
 │   └── config.py          # Configuration management
