@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-24T14:29:29.766532",
-  "last_search": "2026-05-24T14:29:29.611753",
+  "last_updated": "2026-05-24T14:50:38.089375",
+  "last_search": "2026-05-24T14:50:37.961800",
   "total_searches": 1,
   "vehicles_tracked": 3,
   "dealerships_count": 2,
@@ -13,10 +13,10 @@
       "trim": "Sport",
       "type": "used",
       "price": "$21,895",
-      "found_date": "2026-05-24T14:29:29.611333",
-      "dealership": "Leith Honda Aberdeen",
-      "link": "https://www.leithhondaaberdeen.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
-      "dealer_link": "https://www.leithhondaaberdeen.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
+      "found_date": "2026-05-24T14:50:37.961419",
+      "dealership": "AutoPark Honda",
+      "link": "https://www.autoparkhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
+      "dealer_link": "https://www.autoparkhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
     },
     {
       "title": "2021 Honda Civic Sport Touring",
@@ -26,10 +26,10 @@
       "trim": "Sport Touring",
       "type": "used",
       "price": "$25,499",
-      "found_date": "2026-05-24T14:29:29.611328",
-      "dealership": "Leith Honda Raleigh",
-      "link": "https://www.leithhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
-      "dealer_link": "https://www.leithhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
+      "found_date": "2026-05-24T14:50:37.961414",
+      "dealership": "AutoPark Honda",
+      "link": "https://www.autoparkhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
+      "dealer_link": "https://www.autoparkhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
     },
     {
       "title": "2022 Honda Civic Sport",
@@ -39,10 +39,10 @@
       "trim": "Sport",
       "type": "used",
       "price": "$23,995",
-      "found_date": "2026-05-24T14:29:29.611311",
+      "found_date": "2026-05-24T14:50:37.961402",
       "dealership": "Leith Honda Raleigh",
-      "link": "https://www.leithhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
-      "dealer_link": "https://www.leithhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
+      "link": "https://www.leithhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
+      "dealer_link": "https://www.leithhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
     }
   ]
 }
