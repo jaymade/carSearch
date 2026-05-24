@@ -1,23 +1,10 @@
 {
-  "last_updated": "2026-05-24T14:50:38.089375",
-  "last_search": "2026-05-24T14:50:37.961800",
+  "last_updated": "2026-05-24T14:51:33.131884",
+  "last_search": "2026-05-24T14:51:32.990398",
   "total_searches": 1,
-  "vehicles_tracked": 3,
+  "vehicles_tracked": 2,
   "dealerships_count": 2,
   "matches": [
-    {
-      "title": "2020 Honda Civic Sport",
-      "year": "2020",
-      "make": "Honda",
-      "model": "Civic",
-      "trim": "Sport",
-      "type": "used",
-      "price": "$21,895",
-      "found_date": "2026-05-24T14:50:37.961419",
-      "dealership": "AutoPark Honda",
-      "link": "https://www.autoparkhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
-      "dealer_link": "https://www.autoparkhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
-    },
     {
       "title": "2021 Honda Civic Sport Touring",
       "year": "2021",
@@ -26,7 +13,7 @@
       "trim": "Sport Touring",
       "type": "used",
       "price": "$25,499",
-      "found_date": "2026-05-24T14:50:37.961414",
+      "found_date": "2026-05-24T14:51:32.990064",
       "dealership": "AutoPark Honda",
       "link": "https://www.autoparkhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
       "dealer_link": "https://www.autoparkhonda.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
@@ -39,10 +26,10 @@
       "trim": "Sport",
       "type": "used",
       "price": "$23,995",
-      "found_date": "2026-05-24T14:50:37.961402",
-      "dealership": "Leith Honda Raleigh",
-      "link": "https://www.leithhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
-      "dealer_link": "https://www.leithhonda.com/used-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
+      "found_date": "2026-05-24T14:51:32.990032",
+      "dealership": "Leith Honda Aberdeen",
+      "link": "https://www.leithhondaaberdeen.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid",
+      "dealer_link": "https://www.leithhondaaberdeen.com/new-inventory/index.htm?make=Honda&model=Civic%20Hybrid"
     }
   ]
 }
