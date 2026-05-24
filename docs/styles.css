@@ -577,6 +577,47 @@ section h2 i {
     color: #bdc3c7;
 }
 
+/* Built With Section */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+}
+
+.tech-item {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border-top: 3px solid #3498db;
+}
+
+.tech-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    border-top-color: #667eea;
+}
+
+.tech-item i {
+    font-size: 1.8rem;
+    color: #667eea;
+    margin-bottom: 0.6rem;
+}
+
+.tech-name {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+}
+
+.tech-desc {
+    font-size: 0.78rem;
+    color: #7f8c8d;
+}
+
 /* Footer */
 footer {
     text-align: center;
