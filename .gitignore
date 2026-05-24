@@ -109,4 +109,6 @@ dmypy.json
 previous_matches.json
 search.log
 honda_search_export_*.json
-*.pid
+*.pid.DS_Store
+package-lock.json
+venv/
