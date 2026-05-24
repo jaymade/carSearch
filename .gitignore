@@ -112,3 +112,4 @@ honda_search_export_*.json
 *.pid.DS_Store
 package-lock.json
 venv/
+.DS_Store
