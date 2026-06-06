@@ -54,6 +54,9 @@ jobs:
         # Convert to web format
         cd docs
         python convert_data.py
+        
+        # Show the dashboard timestamp in the Action logs for easier debugging
+        python -c "import json; data=json.load(open('data.json')); print('Dashboard last_updated:', data.get('last_updated')); print('Dashboard last_search:', data.get('last_search')); print('Dashboard vehicles:', data.get('vehicles_tracked'))"
     
     - name: Count vehicles found
       id: count
@@ -77,6 +80,7 @@ jobs:
           TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S EST')
           TRIGGER_SOURCE="${{ github.event.inputs.triggered_by || github.event.client_payload.triggered_by || 'manual' }}"
           git commit -m "🚗 Manual search results - ${TIMESTAMP} - Found ${{ steps.count.outputs.count }} vehicles - Triggered by: ${TRIGGER_SOURCE}"
+          git pull --rebase origin ${{ github.ref_name }}
           git push origin ${{ github.ref_name }}
         fi
     
